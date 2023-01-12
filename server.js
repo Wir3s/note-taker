@@ -1,9 +1,13 @@
 const express = require("express");
 const path = require("path");
+const uuid = require("uuid");
+const fs = require('fs');
 
 const notes = require("./db/db.json");
 
 const PORT = process.env.PORT || 3001;
+
+// Middleware
 
 const app = express();
 
@@ -12,7 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-app.get("/", (req, res) =>
+// Get route for index.html
+
+app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/index.html"))
 );
 
@@ -25,26 +31,34 @@ app.get("/api/notes", (req, res) => {
   res.status(200).json(notes);
 });
 
+// Function for reading and appending
+const readAndAppend = (content, file) => {
+  fs.readFile(file, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const parsedData = JSON.parse(data);
+      parsedData.push(content);
+      writeToFile(file, parsedData);
+    }
+  });
+};
+
 // POST request
 app.post("/api/notes", (req, res) => {
   console.info(`${req.method} request received to add a review`);
   console.info(`${req.body}`);
   console.info(res.json(req.body));
-//    if (title && text) {
-//  const { title, text } = res.json(req.body);
-//  const newNote = {
-//     title,
-//     text,
-//  };
-//  const response = {
-//   status: 'success',
-//   body: newNote,
-//  };
-//  console.log(response);
-//  res.status(201).json(response);
-// } else {
-//   res.status(500).json('Error posting note')
-// }
+
+  const { title, text } = req.body;
+
+  if (req.body) {
+    const newJot = {
+      title,
+      text,
+      jot_id: uuid(),
+    };
+  }
 });
 
 app.listen(PORT, () =>
