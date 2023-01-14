@@ -69,7 +69,7 @@ app.post("/api/notes", (req, res) => {
       const newJot = {
         title,
         text,
-        jot_id: uuidv4(),
+        id: uuidv4(),
       };
 
       readAndAppend(newJot, "./db/db.json")
