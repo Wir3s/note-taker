@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
-const uuid = require("uuid");
+// const uuid = require("uuid");
+const { v4: uuidv4 } = require('uuid');
 const fs = require("fs");
 const util = require("util");
 
@@ -36,39 +37,55 @@ const readFromFile = util.promisify(fs.readFile);
 app.get("/api/notes", (req, res) =>
   readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)))
 );
-// app.get("/api/notes", (req, res) => {
-//   res.status(200).json(notes);
-// });
 
-// Function for reading and appending
-// const readAndAppend = (content, file) => {
-//   fs.readFile(file, 'utf8', (err, data) => {
-//     if (err) {
-//       console.error(err);
-//     } else {
-//       const parsedData = JSON.parse(data);
-//       parsedData.push(content);
-//       writeToFile(file, parsedData);
-//     }
-//   });
-// };
 
-// POST request
+// Function for reading and appending - this will move to helper folder
+const readAndAppend = (content, file) => {
+  fs.readFile(file, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const parsedData = JSON.parse(data);
+      parsedData.push(content);
+      writeToFile(file, parsedData);
+    }
+  });
+};
+
+const writeToFile = (destination, content) =>
+  fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
+    err ? console.error(err) : console.info(`\nData written to ${destination}`)
+  );
+
+// POST request - this will move to routes
 app.post("/api/notes", (req, res) => {
-  console.info(`${req.method} request received to add a review`);
-  console.info(`${req.body}`);
-  console.info(res.json(req.body));
 
-  // const { title, text } = req.body;
-  //
-  //   if (req.body) {
-  //     const newJot = {
-  //       title,
-  //       text,
-  //       jot_id: uuid(),
-  //     };
-  //   }
+  // Destructing assignment for items in req.body
+  const { title, text } = req.body;
+
+  // If all required properties are present
+    if (title && text) {
+  // Variable for the object, a new note
+      const newJot = {
+        title,
+        text,
+        jot_id: uuidv4(),
+      };
+
+      readAndAppend(newJot, "./db/db.json")
+
+      const response = {
+        status: 'success',
+        body: newJot,
+      };
+
+      res.json(response);
+    } else {
+      res.json('Error in posting note');
+    }
 });
+
+
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)

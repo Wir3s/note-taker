@@ -1,7 +1,12 @@
 [
     {
-        "title":"The Very First Note",
-        "text":"This note is a note to remind you of all the things",
+        "title": "The Very First Note",
+        "text": "This note is a note to remind you of all the things",
         "id": 1
+    },
+    {
+        "title": "A Second Note Indeed",
+        "text": "Here lives note the second!",
+        "jot_id": "61a3c26d-364f-4bb8-933e-a1880ef72409"
     }
 ]
