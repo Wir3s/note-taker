@@ -1,7 +1,11 @@
 const express = require("express");
 const path = require("path");
 const uuid = require("uuid");
+const fs = require("fs");
+const util = require("util");
 
+
+// Should this be used? It doesn't work currently
 const notes = require("./db/db.json");
 
 const PORT = process.env.PORT || 3001;
@@ -26,9 +30,15 @@ app.get("/notes", (req, res) =>
 );
 
 // GET request for notes - move this to notes.js in /routes
-app.get("/api/notes", (req, res) => {
-  res.status(200).json(notes);
-});
+// Promise version of fs.readFile
+const readFromFile = util.promisify(fs.readFile);
+
+app.get("/api/notes", (req, res) =>
+  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)))
+);
+// app.get("/api/notes", (req, res) => {
+//   res.status(200).json(notes);
+// });
 
 // Function for reading and appending
 // const readAndAppend = (content, file) => {
