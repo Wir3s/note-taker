@@ -84,7 +84,7 @@ app.post("/api/notes", (req, res) => {
 
 // DELETE route for notes
 app.delete("/api/notes/:id", (req, res) => {
-  const noteId = req.id;
+  const noteId = req.params.id;
   readFromFile("./db/db.json")
     .then((data) => JSON.parse(data))
     .then((json) => {
