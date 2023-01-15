@@ -1,6 +1,4 @@
-const express = require("express");
-const app = express();
-
+const notes = require('express').Router();
 const { v4: uuidv4 } = require("uuid");
 
 const {
@@ -10,12 +8,12 @@ const {
 } = require("../helpers/fsUtils");
 
 // GET request for notes
-app.get("/notes", (req, res) =>
+notes.get("/notes", (req, res) =>
   readFromFile("../db/db.json").then((data) => res.json(JSON.parse(data)))
 );
 
 // POST request - this will move to routes
-app.post("/notes", (req, res) => {
+notes.post("/notes", (req, res) => {
   // Destructing assignment for items in req.body
   const { title, text } = req.body;
 
@@ -42,7 +40,7 @@ app.post("/notes", (req, res) => {
 });
 
 // DELETE route for notes
-app.delete("/notes/:id", (req, res) => {
+notes.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id;
   readFromFile("../db/db.json")
     .then((data) => JSON.parse(data))
@@ -55,4 +53,4 @@ app.delete("/notes/:id", (req, res) => {
     });
 });
 
-module.exports = app;
+module.exports = notes;

@@ -1,16 +1,15 @@
 const express = require("express");
 const path = require("path");
 
-
 const PORT = process.env.PORT || 3001;
-const api = require('./routes/notes.js')
+const notesRouter = require("./routes/notes.js");
 const app = express();
 
 // Middleware
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/api', api);
+app.use("/api", notesRouter);
 
 app.use(express.static("public"));
 
