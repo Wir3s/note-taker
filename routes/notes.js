@@ -12,7 +12,7 @@ notes.get("/notes", (req, res) =>
   readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)))
 );
 
-// POST request - this will move to routes
+// POST request 
 notes.post("/notes", (req, res) => {
   // Destructing assignment for items in req.body
   const { title, text } = req.body;
@@ -39,7 +39,7 @@ notes.post("/notes", (req, res) => {
   }
 });
 
-// DELETE route for notes
+// DELETE request
 notes.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id;
   readFromFile("./db/db.json")
