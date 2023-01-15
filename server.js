@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api", notesRouter);
+app.use("/api/notes", notesRouter);
 
 app.use(express.static("public"));
 
