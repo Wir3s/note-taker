@@ -9,7 +9,7 @@ const {
 
 // GET request for notes
 notes.get("/notes", (req, res) =>
-  readFromFile("../db/db.json").then((data) => res.json(JSON.parse(data)))
+  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)))
 );
 
 // POST request - this will move to routes
@@ -26,7 +26,7 @@ notes.post("/notes", (req, res) => {
       id: uuidv4(),
     };
 
-    readAndAppend(newJot, "../db/db.json");
+    readAndAppend(newJot, "./db/db.json");
 
     const response = {
       status: "success",
@@ -42,12 +42,12 @@ notes.post("/notes", (req, res) => {
 // DELETE route for notes
 notes.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id;
-  readFromFile("../db/db.json")
+  readFromFile("./db/db.json")
     .then((data) => JSON.parse(data))
     .then((json) => {
       const result = json.filter((note) => note.id !== noteId);
 
-      writeToFile("../db/db.json", result);
+      writeToFile("./db/db.json", result);
 
       res.json(`Note has been deleted`);
     });
