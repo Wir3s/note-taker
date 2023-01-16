@@ -23,7 +23,7 @@ No installation is required, just visit the URL below.
 
 Navigate to: https://taking-notes.herokuapp.com/ and click 'Get Started' to begin.
 
-![Screenshot1](./images/notes-sc1.png)
+![Screenshot1](./images/note-sc1.png)
 
 ## Contributing
 
